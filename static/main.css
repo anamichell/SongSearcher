@@ -1,0 +1,63 @@
+#heading {
+    text-align: center;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+li {
+    padding: 3px;
+    font-size: 11px;
+    list-style: none;
+    display: list-item;
+}
+
+
+.main-search {
+    border-radius: 5px;
+    font-size: 26px;
+    font-family: karla;
+    text-align: center;
+    border: 1px dotted;
+    width: 400px;
+}
+
+.album-container ul {
+    padding: 0;
+}
+
+
+.album-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.album-cover {
+    width: 100%;
+    height: auto;
+}
+
+.song-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.song-name p {
+    margin: 0; /* Reset default margin */
+}
+
+.song-name {
+    margin: 0;
+    text-align: center;
+}
+
+
+.lyrics-list {
+    display: none;
+    list-style: none;
+    padding: 0;
+}
