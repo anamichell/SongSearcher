@@ -3,7 +3,7 @@ name: GitHub Pages
 on:
   push:
     branches:
-      - main  # Change this to your branch name
+      - main  static# Change this to your branch name
 
 jobs:
   deploy:
