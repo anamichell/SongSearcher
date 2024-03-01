@@ -61,3 +61,18 @@ li {
     list-style: none;
     padding: 0;
 }
+
+.togghighlight { 
+    padding: 3px;
+    margin: 5px;
+    background-color: yellow;
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    font-size: 22px;
+    line-height: 30px;
+}
+
+.highlight { 
+    background-color: yellow;
+}

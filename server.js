@@ -6,6 +6,8 @@ const ejs = require('ejs');
 
 const PORT = 8080;
 
+
+
 let db;
 
 (async () => {
@@ -56,6 +58,57 @@ app.get('/songs', async (req, res) => {
     }
 });
 
+
+app.post('/songs', async (req, res) => {
+	console.log(req.body);
+    try {
+        // Fetch albums
+        const albums = await db.all('SELECT * FROM Albums');
+
+        // Fetch songs and lyrics sequentially
+        for (const album of albums) {
+            // Fetch songs associated with the album
+            album.songs = await db.all('SELECT * FROM Songs WHERE album_id = ?', [album.album_id]);
+
+            // Fetch lyrics for each song
+            for (const song of album.songs) {
+                song.lyrics = await db.all('SELECT * FROM Lyrics WHERE song_id = ?', [song.song_id]);
+            }
+        }
+
+        // Moved the console.log statement inside the asynchronous block
+        console.log('Albums:', albums);
+
+        // Render the 'lyricsearch' template and pass data to it
+        res.render('lyricsearch', { albums });
+    } catch (error) {
+        console.error('Error fetching data from the database:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+app.post('/lyric_search', async (req, res) => {
+    const { text } = req.body;
+    const keywords = text.split(' ');
+    const placeholders = Array(keywords.length).fill('?').join(', ');
+
+    try {
+        const query = `
+            SELECT * 
+            FROM Lyrics 
+            WHERE ${keywords.map(() => 'lyrics LIKE ?').join(' OR ')}
+        `;
+        const params = keywords.map(keyword => `%${keyword}%`);
+
+        const lyrics = await db.all(query, params);
+        res.json({ lyrics });
+    } catch (error) {
+        console.error('Error retrieving lyrics:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 
