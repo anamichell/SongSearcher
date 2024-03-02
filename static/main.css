@@ -13,7 +13,6 @@ li {
     display: list-item;
 }
 
-
 .main-search {
     border-radius: 5px;
     font-size: 26px;
@@ -26,7 +25,6 @@ li {
 .album-container ul {
     padding: 0;
 }
-
 
 .album-container {
     display: flex;
@@ -46,15 +44,10 @@ li {
     margin: 0;
 }
 
-.song-name p {
-    margin: 0; /* Reset default margin */
-}
-
-.song-name {
+.songName {
     margin: 0;
     text-align: center;
 }
-
 
 .lyrics-list {
     display: none;
@@ -62,7 +55,7 @@ li {
     padding: 0;
 }
 
-.togghighlight { 
+.togghighlight {
     padding: 3px;
     margin: 5px;
     background-color: yellow;
@@ -73,6 +66,6 @@ li {
     line-height: 30px;
 }
 
-.highlight { 
+.highlight {
     background-color: yellow;
 }

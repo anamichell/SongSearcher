@@ -27,33 +27,18 @@
             </div>
 
             <div class="album-container" id="categories">
-                <% albums.forEach(album => {%>
+                <% albums.forEach(album => { %>
                 <div class="col-sm-4">
                     <div class="album" id="album-<%= album.id %>">
                         <h1><%= album.title %></h1>
                         <img style="width: 100%; height: auto;" src="<%= album.image_url %>" alt="Album image">
-                        
-                        <!-- Assuming that album.songs is an array, check if it exists and is not undefined -->
-                        <% if (album.songs && Array.isArray(album.songs)) { %>
-                            <ul id="songList" class="list">
-                                <!-- Iterate over album.songs -->
-                                <% album.songs.forEach(song => { %>
-                                    <li class="FUTCT">
-                                        <% if (song.lyrics) { %>
-                                            <p class="song-name" data-lyrics='<%= JSON.stringify(song) %>' onclick="displayLyrics('<%= song.title.replace(/'/g, '&#39;') %>', event)">
-                                                <%= song.title %>
-                                            </p>
-                                        <% } else { %>
-                                            <p class="song-name"><%= song.title %></p>
-                                        <% } %>
-                                    </li>
-                                    
-                                <% }) %>
-                            </ul>
-                        <% } else { %>
-                            <p>No songs available for this album.</p>
-                        <% } %>
-
+                        <ul class="list">
+                            <% album.songs.forEach(song => { %>
+                                <li class="FUTCT">
+                                    <p class="songName" data-lyrics='<%= JSON.stringify(song) %>' onclick="displayLyrics('<%= song.title.replace(/'/g, '&#39;') %>', event)"><%= song.title %></p>
+                                </li>
+                            <% }) %>
+                        </ul>
                     </div>
                 </div>
                 <% }) %>
@@ -66,7 +51,6 @@
         </div>
     </div>
 </div>
-
 
 </body>
 </html>

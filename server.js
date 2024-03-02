@@ -88,27 +88,50 @@ app.post('/songs', async (req, res) => {
 });
 
 
-
 app.post('/lyric_search', async (req, res) => {
-    const { text } = req.body;
-    const keywords = text.split(' ');
-    const placeholders = Array(keywords.length).fill('?').join(', ');
+    let { text } = req.body;
+    
+    // Trim the search text to remove leading and trailing spaces
+    text = text.trim();
 
-    try {
-        const query = `
-            SELECT * 
-            FROM Lyrics 
-            WHERE ${keywords.map(() => 'lyrics LIKE ?').join(' OR ')}
-        `;
-        const params = keywords.map(keyword => `%${keyword}%`);
+    // Check if the search text is empty after trimming
+    if (text === '') {
+        try {
+            // If the search text is empty, fetch all songs
+            const query = `
+                SELECT Lyrics.*, Songs.title as song_name
+                FROM Lyrics 
+                INNER JOIN Songs ON Lyrics.song_id = Songs.song_id
+            `;
+            const lyrics = await db.all(query);
+            res.json({ lyrics });
+        } catch (error) {
+            console.error('Error retrieving lyrics:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    } else {
+        // If the search text is not empty, perform the search as usual
+        const keywords = text.split(' ');
+        const placeholders = Array(keywords.length).fill('?').join(', ');
 
-        const lyrics = await db.all(query, params);
-        res.json({ lyrics });
-    } catch (error) {
-        console.error('Error retrieving lyrics:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        try {
+            const query = `
+                SELECT Lyrics.*, Songs.title as song_name
+                FROM Lyrics 
+                INNER JOIN Songs ON Lyrics.song_id = Songs.song_id
+                WHERE REPLACE(LOWER(lyrics), "'", "") LIKE ${keywords.map(() => 'LOWER(REPLACE(?, "\'", ""))').join(' OR ')}
+            `;
+            const params = keywords.map(keyword => `%${keyword.toLowerCase()}%`);
+
+            const lyrics = await db.all(query, params);
+            res.json({ lyrics });
+        } catch (error) {
+            console.error('Error retrieving lyrics:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
     }
 });
+
 
 
 
