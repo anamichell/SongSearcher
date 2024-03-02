@@ -17,15 +17,16 @@ function displayLyrics(songTitle, songLyrics, searchText) {
     // Use <br> tag to maintain line breaks
     const lyricsHTML = formattedLyrics.replace(/\n/g, '<br>');
 
-    // Highlight the search term in the lyrics
-    const highlightedLyrics = lyricsHTML.replace(new RegExp(searchText, 'gi'), match => `<span class="highlight">${match}</span>`);
+    // If searchText is provided, highlight the search term in the lyrics
+    let highlightedLyrics = lyricsHTML;
+    if (searchText) {
+        highlightedLyrics = lyricsHTML.replace(new RegExp(searchText, 'gi'), match => `<span class="highlight">${match}</span>`);
+    }
 
     // Update the lyrics container with the formatted and highlighted lyrics
     lyricsContainer.innerHTML = highlightedLyrics;
-
-    // Return true if there is highlighted text in the lyrics, false otherwise
-    return highlightedLyrics !== lyricsHTML;
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Add click event listener to the parent container for song names
@@ -39,10 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const songLyrics = songLyricsData.lyrics[0].lyrics; // Extract lyrics from the dataset
             console.log(songLyrics);
             const searchText = search.value.trim(); // Get the search text
-            if (displayLyrics(songTitle, songLyrics, searchText)) {
-                // Pass searchText to displayLyrics function only if there is highlighted text
-                searchText = search.value.trim();
-            }
+            displayLyrics(songTitle, songLyrics, searchText); // Pass searchText to displayLyrics function
         }
     });
 
@@ -91,22 +89,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             console.log("Selected song list:", songList);
     
                             if (songList) {
-                                // Only add the song to the list if there is highlighted text in the lyrics
-                                if (displayLyrics(song.song_name, song.lyrics, searchText)) {
-                                    songList.appendChild(songName);
-                                    // Add click event listener to each dynamically created song name
-                                    songName.addEventListener('click', () => {
-                                        console.log('Clicked me');
-                                        console.log('Song name:', songName.textContent);
-                                        console.log('Lyrics: ', song.lyrics);
+                                songList.appendChild(songName);
+                                // Add click event listener to each dynamically created song name
+                                songName.addEventListener('click', () => {
+                                    console.log('Clicked me');
+                                    console.log('Song name:', songName.textContent);
+                                    console.log('Lyrics: ', data.lyrics);
     
-                                        const songTitle = songName.textContent; // Get the song title
-                                        // const songLyricsData = JSON.parse(songName.lyrics);
-                                        const songLyrics = song.lyrics; // Extract lyrics from the dataset
-                                        console.log(songLyrics);
-                                        displayLyrics(songTitle, songLyrics, searchText); // Pass updated searchText to displayLyrics function
-                                    });
-                                }
+                                    const songTitle = songName.textContent; // Get the song title
+                                    // const songLyricsData = JSON.parse(songName.lyrics);
+                                    const songLyrics = song.lyrics; // Extract lyrics from the dataset
+                                    console.log(songLyrics);
+                                    displayLyrics(songTitle, songLyrics, searchText); // Pass updated searchText to displayLyrics function
+                                });
                             }
                         });
                     }
@@ -124,5 +119,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-    
 });
