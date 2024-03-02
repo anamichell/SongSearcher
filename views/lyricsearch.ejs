@@ -35,7 +35,7 @@
                         <ul class="list">
                             <% album.songs.forEach(song => { %>
                                 <li class="FUTCT">
-                                    <p class="songName" data-lyrics='<%= JSON.stringify(song) %>' onclick="displayLyrics('<%= song.title.replace(/'/g, '&#39;') %>', event)"><%= song.title %></p>
+                                    <p class="songName" data-lyrics='<%= JSON.stringify(song) %>' onclick="displayLyrics()"><%= song.title %></p>
                                 </li>
                             <% }) %>
                         </ul>

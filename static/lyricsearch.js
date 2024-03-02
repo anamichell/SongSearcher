@@ -3,23 +3,34 @@ console.log('Script is running');
 document.addEventListener('DOMContentLoaded', () => {
     const search = document.getElementById('search');
     const songList = document.getElementById('songList');
-
+    const lyricsContainer = document.getElementById('lyrics-container');
     const songNames = document.querySelectorAll('.songName');
 
     // Add onclick event listener to each song name
     songNames.forEach(songName => {
         songName.addEventListener('click', () => {
             const songTitle = songName.textContent; // Get the song title
-            const songLyrics = songName.
-            displayLyrics(songTitle); // Call displayLyrics function with the song title
+            const songLyricsData = JSON.parse(songName.dataset.lyrics);
+            const songLyrics = songLyricsData.lyrics[0].lyrics; // Extract lyrics from the dataset
+            console.log(songLyrics);
+            displayLyrics(songTitle, songLyrics); // Call displayLyrics function with the song title and lyrics
         });
     });
-
-function displayLyrics(songTitle) {
-    // Implement the functionality to display lyrics based on the song title
-    console.log(`Displaying lyrics for ${songTitle}`);
-    // Add your code here to display the lyrics
-}
+    
+    function displayLyrics(songTitle, songLyrics) {
+        // Implement the functionality to display lyrics based on the song title
+        console.log(`Displaying lyrics for ${songTitle}`);
+        console.log(songLyrics); // Log the lyrics
+        
+        // Replace single quotes with HTML entity for proper rendering
+        const formattedLyrics = songLyrics.replace(/'/g, '&#39;');
+        
+        // Use <br> tag to maintain line breaks
+        const lyricsHTML = formattedLyrics.replace(/\n/g, '<br>');
+        
+        // Update the lyrics container with the formatted lyrics
+        lyricsContainer.innerHTML = lyricsHTML;
+    }
 
     search.addEventListener('keyup', async (event) => {
         console.log('Key pressed');
