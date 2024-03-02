@@ -87,7 +87,6 @@ app.post('/songs', async (req, res) => {
     }
 });
 
-
 app.post('/lyric_search', async (req, res) => {
     let { text } = req.body;
     
@@ -99,7 +98,7 @@ app.post('/lyric_search', async (req, res) => {
         try {
             // If the search text is empty, fetch all songs
             const query = `
-                SELECT Lyrics.*, Songs.title as song_name
+                SELECT Lyrics.*, Songs.title as song_name, Songs.album_id
                 FROM Lyrics 
                 INNER JOIN Songs ON Lyrics.song_id = Songs.song_id
             `;
@@ -116,9 +115,10 @@ app.post('/lyric_search', async (req, res) => {
 
         try {
             const query = `
-                SELECT Lyrics.*, Songs.title as song_name
+                SELECT Lyrics.*, Songs.title as song_name, Songs.album_id
                 FROM Lyrics 
                 INNER JOIN Songs ON Lyrics.song_id = Songs.song_id
+                INNER JOIN Albums ON Songs.album_id = Albums.album_id
                 WHERE REPLACE(LOWER(lyrics), "'", "") LIKE ${keywords.map(() => 'LOWER(REPLACE(?, "\'", ""))').join(' OR ')}
             `;
             const params = keywords.map(keyword => `%${keyword.toLowerCase()}%`);

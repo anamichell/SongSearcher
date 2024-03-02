@@ -4,6 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const search = document.getElementById('search');
     const songList = document.getElementById('songList');
 
+    const songNames = document.querySelectorAll('.songName');
+
+    // Add onclick event listener to each song name
+    songNames.forEach(songName => {
+        songName.addEventListener('click', () => {
+            const songTitle = songName.textContent; // Get the song title
+            const songLyrics = songName.
+            displayLyrics(songTitle); // Call displayLyrics function with the song title
+        });
+    });
+
+function displayLyrics(songTitle) {
+    // Implement the functionality to display lyrics based on the song title
+    console.log(`Displaying lyrics for ${songTitle}`);
+    // Add your code here to display the lyrics
+}
+
     search.addEventListener('keyup', async (event) => {
         console.log('Key pressed');
         // Check if the pressed key is not the spacebar
@@ -35,12 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             songList.innerHTML = '<li>No matching songs found</li>';
                         });
                     } else {
+                        console.log('Data lyrics: ', data.lyrics)
                         // Display song names under their respective albums
                         data.lyrics.forEach(song => {
                             const songName = document.createElement('li');
+
                             songName.textContent = song.song_name; // Adjust according to the actual property name in your response
+                            console.log("Song name:", song.song_name);
+
                             const albumId = song.album_id;
                             const songList = document.querySelector(`#album-${albumId} .list`);
+                            console.log(`#album-${albumId} .list`, document.querySelector(`#album-${albumId} .list`));
+
+
+                            console.log("Selected song list:", songList);
+
                             if (songList) {
                                 songList.appendChild(songName);
                             }

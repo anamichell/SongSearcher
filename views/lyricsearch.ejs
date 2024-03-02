@@ -29,7 +29,7 @@
             <div class="album-container" id="categories">
                 <% albums.forEach(album => { %>
                 <div class="col-sm-4">
-                    <div class="album" id="album-<%= album.id %>">
+                    <div class="album" id="album-<%= album.album_id %>">
                         <h1><%= album.title %></h1>
                         <img style="width: 100%; height: auto;" src="<%= album.image_url %>" alt="Album image">
                         <ul class="list">
