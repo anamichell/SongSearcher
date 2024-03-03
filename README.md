@@ -8,6 +8,6 @@ This webpage is still in the process of deployment for direct access via URL.
 
 To have complete access: 
 1) Clone project to local desktop or download ZIP.
-2) On terminal, navigate to project and use ***node server.js**
+2) On terminal, navigate to project and use **node server.js**
 3) Go to ***localhost:8080/songs***
 4) You now have access to my webpage!
