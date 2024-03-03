@@ -27,7 +27,6 @@ function displayLyrics(songTitle, songLyrics, searchText) {
     lyricsContainer.innerHTML = highlightedLyrics;
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
     // Add click event listener to the parent container for song names
     document.querySelector('.album-container').addEventListener('click', (event) => {
@@ -66,45 +65,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     songLists.forEach(songList => {
                         songList.innerHTML = '';
                     });
-    
+                    // Clear previous results
+                    songLists.forEach(songList => {
+                        songList.innerHTML = '';
+                    });
+
                     console.log(data);
-    
+
                     if (data.lyrics.length === 0) {
                         // Display a message if no matching songs are found
                         songLists.forEach(songList => {
                             songList.innerHTML = '<li>No matching songs found</li>';
                         });
                     } else {
-                        console.log('Data lyrics: ', data.lyrics)
+                        console.log('Data lyrics: ', data.lyrics);
                         // Display song names under their respective albums
                         data.lyrics.forEach(song => {
-                            const songName = document.createElement('li');
-    
-                            songName.textContent = song.song_name; // Adjust according to the actual property name in your response
-                            // console.log("Song name:", song.song_name);
-    
-                            const albumId = song.album_id;
-                            const songList = document.querySelector(`#album-${albumId} .list`);
-    
-                            console.log("Selected song list:", songList);
-    
-                            if (songList) {
-                                songList.appendChild(songName);
-                                // Add click event listener to each dynamically created song name
-                                songName.addEventListener('click', () => {
-                                    console.log('Clicked me');
-                                    console.log('Song name:', songName.textContent);
-                                    console.log('Lyrics: ', data.lyrics);
-    
-                                    const songTitle = songName.textContent; // Get the song title
-                                    // const songLyricsData = JSON.parse(songName.lyrics);
-                                    const songLyrics = song.lyrics; // Extract lyrics from the dataset
-                                    console.log(songLyrics);
-                                    displayLyrics(songTitle, songLyrics, searchText); // Pass updated searchText to displayLyrics function
-                                });
+                            const songLyrics = song.lyrics.toLowerCase();
+                            if (songLyrics.includes(searchText.toLowerCase())) {
+                                const songName = document.createElement('li');
+
+                                songName.textContent = song.song_name; // Adjust according to the actual property name in your response
+                                // console.log("Song name:", song.song_name);
+
+                                const albumId = song.album_id;
+                                const songList = document.querySelector(`#album-${albumId} .list`);
+
+                                console.log("Selected song list:", songList);
+
+                                if (songList) {
+                                    songList.appendChild(songName);
+                                    // Add click event listener to each dynamically created song name
+                                    songName.addEventListener('click', () => {
+                                        console.log('Clicked me');
+                                        console.log('Song name:', songName.textContent);
+                                        console.log('Lyrics: ', song.lyrics);
+
+                                        const songTitle = songName.textContent; // Get the song title
+                                        const songLyrics = song.lyrics; // Extract lyrics from the dataset
+                                        console.log(songLyrics);
+                                        displayLyrics(songTitle, songLyrics, searchText); // Pass updated searchText to displayLyrics function
+                                    });
+                                }
                             }
                         });
                     }
+
                 } else {
                     console.error('Error: Search Not Responding');
                 }
